@@ -1,0 +1,75 @@
+import random
+
+def is_satisfied(cnf, assignment):
+    for clause in cnf:
+        satisfied = False
+        for literal in clause:
+            var_index = abs(literal) - 1
+            if var_index < len(assignment):
+                if (literal > 0 and assignment[var_index]) or (literal < 0 and not assignment[var_index]):
+                    satisfied = True
+                    break
+        if not satisfied:
+            return False
+    return True
+
+def resolution(cnf):
+    while True:
+        new_clauses = []
+        for clause1 in cnf:
+            for clause2 in cnf:
+                if clause1 != clause2:
+                    resolvent = list(set(clause1) ^ set(clause2))
+                    if len(resolvent) == 1:
+                        return False
+                    new_clauses.append(resolvent)
+        if not new_clauses:
+            break
+    return True
+
+def dp(cnf, variables):
+    if not cnf:
+        return True
+    for var in variables:
+        new_cnf = [clause for clause in cnf if var not in clause]
+        if dp(new_cnf, [v for v in variables if v != var]):
+            return True
+    return False
+
+def dpll(cnf, variables, assignment):
+    if is_satisfied(cnf, assignment):
+        return True
+    if len(assignment) == len(variables):
+        return False
+    
+    var = variables[len(assignment)]
+    new_assignment = assignment + [var]
+    
+    if dpll(cnf, variables, new_assignment):
+        return True
+    else:
+        return False
+
+def generate_random_cnf(num_vars, num_clauses):
+    cnf = []
+    for _ in range(num_clauses):
+        clause = [random.choice([random.randint(1, num_vars), -random.randint(1, num_vars)]) for _ in range(3)]
+        cnf.append(clause)
+    return cnf
+
+if __name__ == '__main__':
+    num_vars = 5
+    num_clauses = 10
+    cnf = generate_random_cnf(num_vars, num_clauses)
+    
+    print("Formula CNF generată:")
+    for clause in cnf:
+        print(clause)
+    
+    print("\nRezultatul pentru Algoritmul de Rezoluție:", resolution(cnf))
+    
+    variables = list(range(1, num_vars + 1))
+    print("\nRezultatul pentru Algoritmul Davis-Putnam:", dp(cnf, variables))
+    
+    assignment = []
+    print("\nRezultatul pentru Algoritmul DPLL:", dpll(cnf, variables, assignment))
