@@ -1,4 +1,5 @@
-Descriere
+Descriere:
+
 Acest cod implementează trei algoritmi pentru rezolvarea problemelor de satisfiabilitate a formulelor logice în formă normală conjunctivă (CNF) în logica propozițională:
 
 Algoritmul de Rezoluție - Un algoritm de deducere a clauzelor folosind rezolvarea.
