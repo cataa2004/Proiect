@@ -1,0 +1,55 @@
+Set 1 – mic și satisfiabil (~10 ms)
+cnf_set1 = [
+    [1, -2],
+    [-1, 3],
+    [2, -3]
+]
+variables_set1 = [1, 2, 3]
+
+
+Set 2 – mediu, nesatisfiabil (~40 ms - 1200 ms)
+cnf_set2 = [
+    [1, 2],
+    [-1],
+    [-2],
+    [3, -4],
+    [-3],
+    [4],
+    [5],
+    [-5]
+]
+variables_set2 = [1, 2, 3, 4, 5]
+
+Set 3 – mediu-greu, satisfiabil (~120 ms - 5000 ms)
+cnf_set3 = [
+    [1, -2, 3],
+    [-1, 4],
+    [-3, 5],
+    [-4, -5],
+    [6, -7],
+    [-6, 7]
+]
+variables_set3 = [1, 2, 3, 4, 5, 6, 7]4
+
+Set 4 – mare, nesatisfiabil (~480 ms - 10000 ms)
+cnf_set4 = []
+for i in range(1, 20):
+    cnf_set4.append([i])
+    cnf_set4.append([-i])
+
+variables_set4 = list(range(1, 20))
+
+Cum testezi în cod:
+
+tests = [
+    (cnf_set1, variables_set1, "Set 1"),
+    (cnf_set2, variables_set2, "Set 2"),
+    (cnf_set3, variables_set3, "Set 3"),
+    (cnf_set4, variables_set4, "Set 4")
+]
+
+for cnf, vars_, name in tests:
+    print(f"\n{name}:")
+    print("DPLL:", dpll(cnf, vars_, []))
+    print("DP:", dp(cnf, vars_))
+    print("Resolution:", resolution(cnf))
